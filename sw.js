@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kapli-cache-v3';
+const CACHE_NAME = 'kapli-cache-v4';
 const urlsToCache = [
   './',
   './index.html',
