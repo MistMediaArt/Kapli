@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Капли в Нос</title>
+  
+  <!-- PWA Settings -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#121212">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Капли">
+  
+  <!-- Icons -->
+  <link rel="apple-touch-icon" href="icon-192.png">
+  
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <header>
+      <h1>Капли</h1>
+    </header>
+
+    <main>
+      <div class="controls-section">
+        <!-- Dose Selector -->
+        <div class="dose-selector">
+          <label class="dose-option">
+            <input type="radio" name="dose" value="1" checked>
+            <span class="dose-label">1 доза</span>
+          </label>
+          <label class="dose-option">
+            <input type="radio" name="dose" value="2">
+            <span class="dose-label">2 дозы</span>
+          </label>
+        </div>
+
+        <!-- Main Action Button -->
+        <button id="addDropBtn" class="primary-btn">
+          <span class="btn-text">КАПНУЛ</span>
+          <span class="btn-glow"></span>
+        </button>
+
+        <!-- Optional Comment -->
+        <div class="comment-input-wrapper">
+          <input type="text" id="comment" placeholder="Добавить комментарий (опц.)" autocomplete="off">
+        </div>
+      </div>
+
+      <!-- History List -->
+      <div class="history-section">
+        <h2>История</h2>
+        <div id="historyList" class="history-list">
+          <div class="empty-state">Загрузка...</div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

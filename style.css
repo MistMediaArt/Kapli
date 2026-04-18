@@ -1,0 +1,249 @@
+:root {
+  --bg-color: #0d0d12;
+  --surface-color: #1a1a24;
+  --surface-color-hover: #232330;
+  --text-primary: #ffffff;
+  --text-secondary: #8e8e9e;
+  --accent-color: #3b82f6;
+  --accent-color-hover: #60a5fa;
+  --danger-color: #ef4444;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  min-height: 100vh;
+  /* Для нативного фила на iOS */
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  padding: 20px 0;
+  margin-bottom: 20px;
+}
+
+h1 {
+  font-weight: 800;
+  font-size: 28px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #fff, #a5b4fc);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.controls-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* Dose Selector */
+.dose-selector {
+  display: flex;
+  background-color: var(--surface-color);
+  border-radius: var(--radius-md);
+  padding: 6px;
+}
+
+.dose-option {
+  flex: 1;
+  position: relative;
+  cursor: pointer;
+}
+
+.dose-option input {
+  display: none;
+}
+
+.dose-label {
+  display: block;
+  text-align: center;
+  padding: 14px 0;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.dose-option input:checked + .dose-label {
+  background-color: var(--accent-color);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+/* Primary Button */
+.primary-btn {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 1;
+  max-height: 280px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #2a2a3b, #1d1d28);
+  border: 4px solid var(--surface-color);
+  box-shadow: 
+    10px 10px 20px #0a0a0e,
+    -10px -10px 20px #242432;
+  color: white;
+  font-size: 32px;
+  font-weight: 800;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  overflow: hidden;
+  margin: 10px auto;
+}
+
+.primary-btn:active {
+  transform: scale(0.95);
+  box-shadow: 
+    5px 5px 10px #0a0a0e,
+    -5px -5px 10px #242432;
+}
+
+.primary-btn.loading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.btn-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(59,130,246,0.3) 0%, rgba(0,0,0,0) 70%);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.primary-btn:active .btn-glow {
+  opacity: 1;
+}
+
+/* Comment Input */
+.comment-input-wrapper input {
+  width: 100%;
+  background-color: var(--surface-color);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 18px 20px;
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 16px;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.comment-input-wrapper input:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.comment-input-wrapper input::placeholder {
+  color: var(--text-secondary);
+}
+
+/* History Section */
+.history-section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.history-item {
+  background-color: var(--surface-color);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: slideFadeIn 0.3s ease-out forwards;
+}
+
+.history-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-time {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.history-date {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.history-dose {
+  display: inline-block;
+  background-color: rgba(59, 130, 246, 0.15);
+  color: var(--accent-color-hover);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.history-comment {
+  font-size: 15px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--text-secondary);
+  padding: 40px 0;
+  font-style: italic;
+}
+
+@keyframes slideFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
