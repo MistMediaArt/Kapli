@@ -9,7 +9,8 @@ import {
   limit, 
   serverTimestamp,
   deleteDoc,
-  doc
+  doc,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 // Ваш Firebase Config (вставлен автоматически)
@@ -132,8 +133,14 @@ function setupRealtimeListener() {
       const dateObj = data.timestamp ? data.timestamp.toDate() : new Date(); 
       const { dateLabel, timeStr } = formatDate(dateObj);
       
-      const doseText = data.dose === 1 ? '1 доза' : `${data.dose} дозы`;
       
+      const doseSelectHtml = `
+        <select class="history-dose-select" data-id="${doc.id}">
+          <option value="1" ${data.dose === 1 ? 'selected' : ''}>1 доза</option>
+          <option value="2" ${data.dose === 2 ? 'selected' : ''}>2 дозы</option>
+        </select>
+      `;
+
       const itemEl = document.createElement('div');
       itemEl.className = 'history-item';
       
@@ -146,7 +153,7 @@ function setupRealtimeListener() {
         <div class="history-item-header">
           <div class="history-time">${timeStr} <span class="history-date">· ${dateLabel}</span></div>
           <div class="history-actions">
-            <div class="history-dose">${doseText}</div>
+            ${doseSelectHtml}
             <button class="delete-btn" data-id="${doc.id}" aria-label="Удалить">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
             </button>
@@ -182,6 +189,22 @@ historyList.addEventListener('click', async (e) => {
         console.error("Ошибка при удалении: ", err);
         alert("Не удалось удалить запись: " + err.message);
       }
+    }
+  }
+});
+
+// Обработка изменения дозы (делегирование событий)
+historyList.addEventListener('change', async (e) => {
+  if (e.target.classList.contains('history-dose-select')) {
+    const docId = e.target.getAttribute('data-id');
+    const newDose = parseInt(e.target.value, 10);
+    try {
+      await updateDoc(doc(db, "drops_history", docId), {
+        dose: newDose
+      });
+    } catch (err) {
+      console.error("Ошибка при обновлении дозы: ", err);
+      alert("Не удалось обновить дозу: " + err.message);
     }
   }
 });
