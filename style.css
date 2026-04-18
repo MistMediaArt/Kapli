@@ -223,6 +223,30 @@ h1 {
   font-weight: 600;
 }
 
+.history-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.delete-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover, .delete-btn:active {
+  color: var(--danger-color);
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
 .history-comment {
   font-size: 15px;
   color: var(--text-secondary);

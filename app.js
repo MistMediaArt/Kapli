@@ -7,7 +7,9 @@ import {
   query, 
   orderBy, 
   limit, 
-  serverTimestamp 
+  serverTimestamp,
+  deleteDoc,
+  doc
 } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
 // Ваш Firebase Config (вставлен автоматически)
@@ -143,7 +145,12 @@ function setupRealtimeListener() {
       itemEl.innerHTML = `
         <div class="history-item-header">
           <div class="history-time">${timeStr} <span class="history-date">· ${dateLabel}</span></div>
-          <div class="history-dose">${doseText}</div>
+          <div class="history-actions">
+            <div class="history-dose">${doseText}</div>
+            <button class="delete-btn" data-id="${doc.id}" aria-label="Удалить">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+            </button>
+          </div>
         </div>
         ${commentHtml}
       `;
@@ -162,3 +169,19 @@ function setupRealtimeListener() {
 
 // Запуск слушателя
 setupRealtimeListener();
+
+// Обработка удаления (делегирование событий)
+historyList.addEventListener('click', async (e) => {
+  const deleteBtn = e.target.closest('.delete-btn');
+  if (deleteBtn) {
+    const docId = deleteBtn.getAttribute('data-id');
+    if (confirm('Вы уверены, что хотите удалить эту запись?')) {
+      try {
+        await deleteDoc(doc(db, "drops_history", docId));
+      } catch (err) {
+        console.error("Ошибка при удалении: ", err);
+        alert("Не удалось удалить запись: " + err.message);
+      }
+    }
+  }
+});
