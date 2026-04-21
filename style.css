@@ -1,17 +1,68 @@
 :root {
-  /* Apple iOS Dark Mode Palette */
+  color-scheme: dark;
+  /* Default (Apple iOS Dark Mode Palette) */
   --bg-color: #000000;
-  --surface-color: #1c1c1e;
-  --surface-color-hover: #2c2c2e;
+  --surface-color: rgba(28, 28, 30, 0.45);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 12px 32px 0 rgba(0, 0, 0, 0.6);
   --text-primary: #ffffff;
   --text-secondary: #8e8e93;
-  --accent-color: #ffffff; /* Modern clean white for main UI actions */
+  --accent-color: #ffffff;
+  --btn-start: #3a3a3c;
+  --btn-end: #1c1c1e;
+  --btn-shadow: rgba(0, 0, 0, 0.8);
+  --btn-text: #ffffff;
   --danger-color: #ff453a;
   
   --radius-xl: 32px;
   --radius-lg: 20px;
   --radius-md: 14px;
   --radius-sm: 8px;
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --bg-color: #f2f2f7;
+  --surface-color: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.9);
+  --glass-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.05);
+  --text-primary: #1c1c1e;
+  --text-secondary: #8e8e93;
+  --accent-color: #007aff;
+  /* Мягкий терракотово-персиковый, не вырвиглазный */
+  --btn-start: #e09382;
+  --btn-end: #c46d5b;
+  --btn-shadow: rgba(196, 109, 91, 0.3);
+  --btn-text: #ffffff;
+}
+
+[data-theme="animated"] {
+  color-scheme: light;
+  --bg-color: transparent;
+  --surface-color: rgba(255, 255, 255, 0.35);
+  --glass-border: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 12px 32px 0 rgba(156, 137, 184, 0.15);
+  --text-primary: #453e39;
+  --text-secondary: #746d68;
+  --accent-color: #9C89B8;
+  --btn-start: #F0A6CA;
+  --btn-end: #B8BEDD;
+  --btn-shadow: rgba(240, 166, 202, 0.4);
+  --btn-text: #2c2c2e;
+}
+
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+
+#bg-canvas.hidden {
+  display: none;
 }
 
 * {
@@ -41,11 +92,42 @@ body {
 header {
   text-align: center;
   margin-bottom: 30px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header h1 {
+  font-weight: 700;
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+}
+
+.settings-btn {
+  position: absolute;
+  right: 0;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.settings-btn:active {
+  background-color: var(--surface-color);
+  transform: scale(0.95);
 }
 
 h1 {
   font-weight: 700;
-  font-size: 34px;
+  font-size: 24px;
   letter-spacing: -0.5px;
   color: var(--text-primary);
 }
@@ -62,8 +144,12 @@ h1 {
 .dose-selector {
   display: flex;
   background-color: var(--surface-color);
-  border-radius: var(--radius-sm);
-  padding: 2px;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+  border-radius: var(--radius-md);
+  padding: 4px;
   width: 100%;
   max-width: 280px;
 }
@@ -90,8 +176,9 @@ h1 {
 }
 
 .dose-option input:checked + .dose-label {
-  background-color: #636366;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+  background: radial-gradient(circle at top left, var(--btn-start), var(--btn-end));
+  color: var(--btn-text);
+  box-shadow: 0 3px 8px var(--btn-shadow);
 }
 
 /* Primary Button Apple Glow */
@@ -101,12 +188,12 @@ h1 {
   max-width: 240px;
   aspect-ratio: 1;
   border-radius: 50%;
-  background: radial-gradient(circle at top left, #3a3a3c, #1c1c1e);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: radial-gradient(circle at top left, var(--btn-start), var(--btn-end));
+  border: 1px solid var(--glass-border);
   box-shadow: 
-    0 20px 40px rgba(0,0,0,0.5),
-    inset 0 1px 1px rgba(255,255,255,0.1);
-  color: var(--text-primary);
+    0 20px 40px var(--btn-shadow),
+    inset 0 1px 1px rgba(255,255,255,0.2);
+  color: var(--btn-text);
   font-size: 28px;
   font-weight: 700;
   letter-spacing: 1px;
@@ -157,18 +244,22 @@ h1 {
 .comment-input-wrapper input {
   width: 100%;
   background-color: var(--surface-color);
-  border: none;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
   padding: 16px 20px;
   border-radius: var(--radius-md);
   color: var(--text-primary);
   font-size: 16px;
   font-family: inherit;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
 }
 
 .comment-input-wrapper input:focus {
   outline: none;
-  background-color: var(--surface-color-hover);
+  border-color: var(--accent-color);
+  background-color: rgba(255,255,255,0.05);
 }
 
 .comment-input-wrapper input::placeholder {
@@ -177,11 +268,13 @@ h1 {
 
 /* History Section */
 .history-section h2 {
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 600;
   margin-bottom: 20px;
   color: var(--text-primary);
   letter-spacing: -0.3px;
+  text-transform: uppercase;
+  opacity: 0.8;
 }
 
 .history-list {
@@ -190,11 +283,15 @@ h1 {
   gap: 20px;
 }
 
-/* Grouping Accordion */
-.history-group {
+/* Tree Grouping */
+.tree-level {
   display: flex;
   flex-direction: column;
 }
+
+.level-1 > .group-header h3 { font-size: 20px; font-weight: 800; color: var(--text-primary); }
+.level-2 > .group-header h3 { font-size: 17px; font-weight: 600; color: var(--text-primary); }
+.level-3 > .group-header h3 { font-size: 15px; font-weight: 500; color: var(--text-secondary); }
 
 .group-header {
   display: flex;
@@ -202,14 +299,8 @@ h1 {
   align-items: center;
   padding: 12px 4px;
   cursor: pointer;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  margin-bottom: 12px;
-}
-
-.group-header h3 {
-  font-size: 17px;
-  font-weight: 600;
-  color: var(--text-primary);
+  border-bottom: 1px solid var(--glass-border);
+  margin-bottom: 8px;
 }
 
 .group-header .chevron {
@@ -227,6 +318,16 @@ h1 {
   gap: 12px;
   overflow: hidden;
   transition: all 0.3s ease;
+  margin-left: 12px;
+  padding-left: 10px;
+  border-left: 1px solid var(--glass-border);
+  margin-bottom: 8px;
+}
+
+.level-1 > .group-content {
+  margin-left: 0;
+  padding-left: 0;
+  border-left: none;
 }
 
 .group-content.hidden {
@@ -236,6 +337,10 @@ h1 {
 /* History Items */
 .history-item {
   background-color: var(--surface-color);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
   padding: 16px;
   border-radius: var(--radius-md);
   display: flex;
@@ -343,4 +448,183 @@ h1 {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+
+/* Modal Settings */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  background-color: var(--surface-color);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  box-shadow: var(--glass-shadow);
+  animation: slideFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  display: flex;
+}
+
+.close-btn:active {
+  background-color: var(--surface-color-hover);
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-group label {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.settings-select {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background-color: rgba(0,0,0,0.2);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  outline: none;
+  font-size: 16px;
+  font-family: inherit;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1.5 1.5L6 6L10.5 1.5' stroke='%238e8e93' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  cursor: pointer;
+}
+
+.settings-select option {
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.settings-action-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-md);
+  background-color: var(--surface-color-hover);
+  color: var(--text-primary);
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.settings-action-btn:active {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Modal Confirmation Styles */
+.modal-content.confirm-content {
+  text-align: center;
+  align-items: stretch;
+  gap: 16px;
+}
+
+.confirm-content h3 {
+  font-size: 18px;
+  color: var(--text-primary);
+}
+
+.confirm-content p {
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.confirm-actions .secondary-btn,
+.confirm-actions .danger-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.secondary-btn {
+  background-color: var(--surface-color);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+}
+
+.danger-btn {
+  background-color: var(--danger-color);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255, 69, 58, 0.3);
+}
+
+.secondary-btn:hover, .danger-btn:hover {
+  opacity: 0.8;
 }

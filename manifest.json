@@ -1,6 +1,6 @@
 {
-  "name": "Капли в Нос",
-  "short_name": "Капли",
+  "name": "kapli v0.1",
+  "short_name": "kapli v0.1",
   "description": "Приложение для трекинга закапывания капель в нос",
   "start_url": "./",
   "display": "standalone",
