@@ -310,15 +310,29 @@ historyList.addEventListener('click', async (e) => {
   const header = e.target.closest('.group-header');
   if (header) {
     const path = header.getAttribute('data-path');
-    if (collapsedGroups.has(path)) {
-        collapsedGroups.delete(path);
-    } else {
-        collapsedGroups.add(path);
-    }
     const chevron = header.querySelector('.chevron');
     const content = header.nextElementSibling;
-    chevron.classList.toggle('collapsed');
-    content.classList.toggle('hidden');
+
+    if (collapsedGroups.has(path)) {
+        // Разворачиваем группу
+        collapsedGroups.delete(path);
+        chevron.classList.remove('collapsed');
+        content.classList.remove('hidden');
+    } else {
+        // Сворачиваем саму группу
+        collapsedGroups.add(path);
+        chevron.classList.add('collapsed');
+        content.classList.add('hidden');
+
+        // Автоматически сворачиваем все вложенные группы
+        const childHeaders = content.querySelectorAll('.group-header');
+        childHeaders.forEach(childHeader => {
+            const childPath = childHeader.getAttribute('data-path');
+            collapsedGroups.add(childPath);
+            childHeader.querySelector('.chevron').classList.add('collapsed');
+            childHeader.nextElementSibling.classList.add('hidden');
+        });
+    }
     return;
   }
 
